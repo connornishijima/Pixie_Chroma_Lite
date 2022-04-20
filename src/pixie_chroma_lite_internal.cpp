@@ -10,9 +10,14 @@
 #include "Pixie_Chroma_Lite.h" 
 #include "utility/pixie_utility.h"
 
+// TEMPORARY PIN SETTINGS ###############################################################
+
 #define PIXEL_PORT  PORTB  // Port of the pin the pixels are connected to
 #define PIXEL_DDR   DDRB   // Port of the pin the pixels are connected to
 #define PIXEL_BIT   4      // Bit of the pin the pixels are connected to
+
+// TEMPORARY PIN SETTINGS ###############################################################
+
 
 // These are the timing constraints taken mostly from the WS2812 datasheets 
 // These are chosen to be conservative and avoid problems rather than for maximum throughput 

@@ -1,62 +1,69 @@
-/*----------------------------------------------------------------------------
+#include "Pixie_Chroma_Lite.h"
+Pixie_Chroma_Lite pix;
 
-  Pixie Chroma | 01_Getting_Started.ino
-  by Connor Nishijima Nov. 2021
-  -------------------------------------
+// WARNING!
+//
+// Only AVR is tested thus far!
+//
+// You must hard-code your DATA PIN and PORT
+// in pixie_chroma_lite_internal.cpp under
+// "TEMPORARY PIN SETTINGS". This will be
+// simplified in the future.
+//
+// Default is PB4
 
-  Welcome to Pixie Chroma! This sketch will define the bare minimum of any
-  Pixie Chroma Arduino code, including how to initialize your Pixie Chromas
-  and print text to the display!
-
-----------------------------------------------------------------------------*/
-
-#include "Pixie_Chroma.h" // ... Include library
-PixieChroma pix; // ............ Get class object
-
-#define DATA_PIN  12 // GPIO to use for Pixie Chroma data line
-#define PIXIES_X  2  // Total amount and arrangement
-#define PIXIES_Y  1  // of Pixie PCBs = 2 x 1
+uint8_t color_index = 2;
+uint8_t colors[3][3] = {
+  {255,0,0},
+  {0,255,0},
+  {0,0,255}
+};
 
 void setup() {
-  pix.begin( DATA_PIN, PIXIES_X, PIXIES_Y );
-  // Initializes the displays, and sets things
-  // like the default power budget for you.
-
-  pix.clear(); // ................... Clears the display buffer
-  pix.color( CRGB(255,0,64) ); // ... Sets the global color to *PINK*
-  
-  pix.print( "HI [:HEART:]" ); // ... Print a char array with a Shortcode (see 02_Advanced/14_Shortcode_Library)
-  pix.show(); // .................... Send all updates to the Pixie Chroma PCBs
+  pix.begin(4, 12);
 }
 
 void loop() {
-  // Nothing to see here!
+  static int16_t lev = 0;
+  static int16_t dir = -1;
+  
+  pix.set_color(
+    (colors[color_index][0] * lev) >> 8,
+    (colors[color_index][1] * lev) >> 8,
+    (colors[color_index][2] * lev) >> 8
+  );
+  pix.show();
+
+  lev += dir;
+  if(dir == 1 && lev >= 25){
+    lev = 25;
+    dir = -1;
+  }
+  else if(dir == -1 && lev <= 0){
+    lev = 0;
+    dir = 1;
+
+    color_index++;
+    if(color_index >= 3){
+      color_index = 0;
+    }
+    
+    pix.clear();
+    if(color_index == 0){
+      print_string("Hello, from ATmega328P!");
+    }
+    else if(color_index == 1){
+      print_string("Rendered directly to the");
+    }
+    else if(color_index == 2){
+      print_string("LEDs, matrix not in RAM!");
+    }
+  }
 }
 
-
-/*################################# WIRING ###################################
-
-  GND ---------------+---------------------------+
-                     |                           |
-  DATA_PIN -------+  |  +-- VCC    +----------+  |  +-- VCC
-                  |  |  |          |          |  |  |  
-           +- - - | -|- | - - -+   |   +- - - | -|- | - - -+
-           | ==== O  O  O ==== |   |   | ==== O  O  O ==== |
-                     ^             |             ^          
-           |                   |   |   |                   |
-                  PIXIE 1          |          PIXIE 2       
-           |                   |   |   |                   |
-                                   |                        
-           | ==== O  O  O ==== |   |   | ==== O  O  O ==== |
-           +- - - | - - - - - -+   |   +- - - - - - - - - -+
-                  |                |
-                  +----------------+
-               (DATA LINE TO NEXT PIXIE)
-
-  WARNING: Always double-check your wiring! LEDs may be low power, but they
-  are more-than-happy to burn themselves out if wired incorrectly!
-
-  Each Pixie Chroma PCB has a gold arrow on its face, which points to the top
-  of the PCB - shown here with a ^ character.
-
-################################## WIRING ##################################*/
+void print_string(char* message){
+  uint16_t len = strlen(message);
+  for(uint16_t i = 0; i < len; i++){
+    pix.add_char(message[i], 8+(7*i));
+  }
+}
