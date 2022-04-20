@@ -6,6 +6,7 @@ Tested / working so far:
 
 - ATMEGA32u4
 - ATMEGA328P
+- ATMEGA2560
 
 Not working yet:
 
