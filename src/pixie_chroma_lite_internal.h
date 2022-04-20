@@ -47,7 +47,6 @@ class Pixie_Chroma_Lite{
 	private:
 		// Functions ----------------------------------
 		
-		void send_bit( bool bit_val );
 		void send_byte( uint8_t byte );
 		void send_pixel( uint8_t r, uint8_t g, uint8_t b );
 		

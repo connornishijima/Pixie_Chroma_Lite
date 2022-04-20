@@ -3,14 +3,18 @@ Pixie_Chroma_Lite pix;
 
 // WARNING!
 //
-// Only AVR is tested thus far!
+// Only ATMega series is tested thus far!
 //
 // You must hard-code your DATA PIN and PORT
-// in pixie_chroma_lite_internal.cpp under
+// in "platforms/pixie_atmega.h" under
 // "TEMPORARY PIN SETTINGS". This will be
 // simplified in the future.
 //
-// Default is PB4
+// Default pin is PB4 for now. That's:
+//
+// Pin 12 on Uno      (ATMEGA328P)
+// Pin 10 on Mega     (ATMEGA2560)
+// Pin 8  on Leonardo (ATMEGA32u4)
 
 uint8_t color_index = 2;
 uint8_t colors[3][3] = {
