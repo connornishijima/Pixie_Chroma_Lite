@@ -2,12 +2,12 @@
  * @file pixie_chroma_lite_internal.cpp
  *
  * Designed specifically to work with Pixie Chroma:
- * ----> https://connornishijima.github.io/PixieChroma
+ * ----> www.lixielabs.com/chroma
  *
- * Last Updated by Connor Nishijima on 4/19/22
+ * Last Updated by Connor Nishijima on 4/30/22
  */
 
-#include "Pixie_Chroma_Lite.h" 
+#include "PixieChromaLite.h" 
 #include "utility/pixie_utility.h"
 #include "platforms/pixie_avr.h"
 
@@ -15,14 +15,14 @@
 // -- PUBLIC CLASS FUNCTIONS -------------------------------------------------------------------------------|
 // ---------------------------------------------------------------------------------------------------------|
 
-Pixie_Chroma_Lite::Pixie_Chroma_Lite(){}
+PixieChromaLite::PixieChromaLite(){}
 
 
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // %% FUNCTIONS - SETUP %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-void Pixie_Chroma_Lite::begin( const uint8_t data_pin, uint8_t num_pixies ){
+void PixieChromaLite::begin( const uint8_t data_pin, uint8_t num_pixies ){
 	init_pin(data_pin);
 	
 	num_displays = num_pixies * 2;
@@ -53,7 +53,7 @@ void Pixie_Chroma_Lite::begin( const uint8_t data_pin, uint8_t num_pixies ){
 // %% FUNCTIONS - WRITE %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-void Pixie_Chroma_Lite::add_char( char chr, uint16_t x_pos ){
+void PixieChromaLite::add_char( char chr, uint16_t x_pos ){
 	if ( chr >= printable_ascii_offset ) {
 		chr -= printable_ascii_offset;
 	}
@@ -70,7 +70,7 @@ void Pixie_Chroma_Lite::add_char( char chr, uint16_t x_pos ){
 // %% FUNCTIONS - UPDATING THE MASK / LEDS %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-void Pixie_Chroma_Lite::show(){
+void PixieChromaLite::show(){
 	cli();
 	for(uint8_t disp = 0; disp < num_displays; disp++){
 		for(uint8_t y = 0; y < 7; y++){
@@ -99,7 +99,7 @@ void Pixie_Chroma_Lite::show(){
 }
 
 #if !defined(ATTINY_MODE)
-void Pixie_Chroma_Lite::print_mask(){
+void PixieChromaLite::print_mask(){
 	Serial.println();
 	for (uint8_t y = 0; y < 7; y++) {
 		for (uint16_t x = 0; x < num_columns; x++) {
@@ -124,7 +124,7 @@ void Pixie_Chroma_Lite::print_mask(){
 #endif
 
 
-void Pixie_Chroma_Lite::send_byte( uint8_t byte ) {
+void PixieChromaLite::send_byte( uint8_t byte ) {
 	for ( uint8_t bit = 0 ; bit < 8 ; bit++ ) {
 		send_bit( bitRead( byte , 7 ) );	// Neopixel wants bit in highest-to-lowest order
 											// so send highest bit (bit #7 in an 8-bit byte since they start at 0)
@@ -133,13 +133,13 @@ void Pixie_Chroma_Lite::send_byte( uint8_t byte ) {
 }
 
 
-void Pixie_Chroma_Lite::send_pixel( uint8_t r, uint8_t g, uint8_t b ) {
+void PixieChromaLite::send_pixel( uint8_t r, uint8_t g, uint8_t b ) {
   send_byte(g);
   send_byte(r);
   send_byte(b);
 }
 
-void Pixie_Chroma_Lite::set_color( uint8_t r, uint8_t g, uint8_t b ){
+void PixieChromaLite::set_color( uint8_t r, uint8_t g, uint8_t b ){
 	for(uint16_t i = 0; i < num_displays*3; i+=3){
 		color_data[i+0] = r;
 		color_data[i+1] = g;
@@ -147,12 +147,12 @@ void Pixie_Chroma_Lite::set_color( uint8_t r, uint8_t g, uint8_t b ){
 	}
 }
 
-void Pixie_Chroma_Lite::set_color( uint8_t r, uint8_t g, uint8_t b, uint16_t display ){
+void PixieChromaLite::set_color( uint8_t r, uint8_t g, uint8_t b, uint16_t display ){
 	color_data[(3*display)+0] = r;
 	color_data[(3*display)+1] = g;
 	color_data[(3*display)+2] = b;
 }
 
-void Pixie_Chroma_Lite::clear(){
+void PixieChromaLite::clear(){
 	memset( mask_data, 0, num_columns );
 }

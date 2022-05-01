@@ -2,9 +2,9 @@
  * @file pixie_chroma_lite_internal.h
  *
  * Designed specifically to work with Pixie Chroma:
- * ----> https://connornishijima.github.io/PixieChroma
+ * ----> www.lixielabs.com/chroma
  *
- * Last Updated by Connor Nishijima on 4/19/22
+ * Last Updated by Connor Nishijima on 4/30/22
  */
 
 #ifndef pixie_chroma_lite_h
@@ -18,10 +18,10 @@
     Arduino! **For full example usage, see File > Examples > Pixie_Chroma_Lite
 	inside Arduino!**.
 *///............................................................................
-class Pixie_Chroma_Lite{
+class PixieChromaLite{
 	public:
-		/** @brief Construct a Pixie_Chroma_Lite class object */
-		Pixie_Chroma_Lite(); 
+		/** @brief Construct a PixieChromaLite class object */
+		PixieChromaLite(); 
 		
 		/*+-- Functions - Setup ------------------------------------------------------------*/ 
 		/*|*/ void begin( const uint8_t data_pin, uint8_t num_pixies );

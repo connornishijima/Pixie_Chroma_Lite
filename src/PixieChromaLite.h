@@ -1,10 +1,10 @@
 /*! 
- * @file Pixie_Chroma_Lite.h 
+ * @file PixieChromaLite.h 
  *
  * Designed specifically to work with Pixie Chroma:
- * ----> https://connornishijima.github.io/PixieChroma
+ * ----> www.lixielabs.com/chroma
  *
- * Last Updated by Connor Nishijima on 4/19/22
+ * Last Updated by Connor Nishijima on 4/30/22
  */
 
 /*
@@ -37,7 +37,7 @@
 
     Welcome to the source code of the Pixie Chroma Lite library!
 
-    "Pixie_Chroma_Lite.h" is the main file, which loads all others, including
+    "PixieChromaLite.h" is the main file, which loads all others, including
     the pixie_chroma_lite_internal.h/.cpp that contain the Pixie_Chroma_Lite class definitions.
 
 	The custom SK6805 driver is derived from:
