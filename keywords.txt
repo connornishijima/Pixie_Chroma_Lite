@@ -1,0 +1,30 @@
+###########################################
+# Syntax Coloring Map for Pixie Chroma Lite
+###########################################
+
+######################################
+# Datatypes (KEYWORD1) 
+######################################
+
+PixieChromaLite	KEYWORD1
+
+######################################
+# Methods and Functions (KEYWORD2)
+######################################
+
+begin	KEYWORD2
+clear	KEYWORD2
+show	KEYWORD2
+add_char	KEYWORD2
+print_mask	KEYWORD2
+set_color	KEYWORD2
+
+num_displays	KEYWORD2
+num_columns	KEYWORD2
+matrix_width	KEYWORD2
+mask_data	KEYWORD2
+color_data	KEYWORD2
+
+######################################
+# Constants (LITERAL1)
+######################################
