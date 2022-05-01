@@ -22,10 +22,12 @@ Tested / working so far:
 - ATMEGA32U4
 - ATMEGA1280
 - ATMEGA2560
+- ATTINY45
+- ATTINY85 // ATTINY\*4 and 0-series not yet tested
 
 Not working yet / planned:
 
-- ATTINY series
+- ~ATTINY series~
 - SAMD21
 - ESP8266
 - ESP32
