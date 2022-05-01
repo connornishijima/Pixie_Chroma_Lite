@@ -1,4 +1,8 @@
-#if defined(__AVR_ATmega168__) || defined(__AVR_ATmega328P__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__) || defined(__AVR_ATmega16u2__) || defined(__AVR_ATmega32u4__)
+#if defined(__AVR_ATmega168__) || defined(__AVR_ATmega328P__) || defined(__AVR_ATmega1280__) || defined(__AVR_ATmega2560__) || defined(__AVR_ATmega16u2__) || defined(__AVR_ATmega32u4__) || defined(__AVR_ATtiny45__) || defined(__AVR_ATtiny85__) // Any currently tested AVR
+
+#if defined(__AVR_ATtiny45__) || defined(__AVR_ATtiny85__) // ATtiny only
+	#define ATTINY_MODE
+#endif
 
 #include "Arduino.h"
 
@@ -6,7 +10,7 @@
 
 #define PIXEL_PORT  PORTB  // Port of the pin the pixels are connected to
 #define PIXEL_DDR   DDRB   // Port of the pin the pixels are connected to
-#define PIXEL_BIT   4      // Bit of the pin the pixels are connected to
+#define PIXEL_BIT   4      // Bit of the pin the pixels are connected to (default PB2)
 
 // TEMPORARY PIN SETTINGS ###############################################################
 
@@ -27,7 +31,7 @@
 #define NS_PER_CYCLE ( NS_PER_SEC / CYCLES_PER_SEC )
 #define NS_TO_CYCLES(n) ( (n) / NS_PER_CYCLE )
 
-void init_pin(){
+void init_pin(uint8_t data_pin){ // Parameter not used yet
 	bitSet( PIXEL_DDR , PIXEL_BIT );
 }
 

@@ -9,7 +9,7 @@
 
 #include "Pixie_Chroma_Lite.h" 
 #include "utility/pixie_utility.h"
-#include "platforms/pixie_atmega.h"
+#include "platforms/pixie_avr.h"
 
 // ---------------------------------------------------------------------------------------------------------|
 // -- PUBLIC CLASS FUNCTIONS -------------------------------------------------------------------------------|
@@ -23,10 +23,10 @@ Pixie_Chroma_Lite::Pixie_Chroma_Lite(){}
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 void Pixie_Chroma_Lite::begin( const uint8_t data_pin, uint8_t num_pixies ){
-	init_pin();
+	init_pin(data_pin);
 	
 	num_displays = num_pixies * 2;
-	num_columns = ( num_displays + 2 ) * 7;
+	num_columns  = ( num_displays + 1 ) * 7;
 	matrix_width = num_displays * 5;
 
 	mask_data  = new uint8_t[ num_columns ];
@@ -37,12 +37,15 @@ void Pixie_Chroma_Lite::begin( const uint8_t data_pin, uint8_t num_pixies ){
 	}
 	
 
-	while (!Serial) {
-		delay(1);
-	}
+	// Here during development
+	#if !defined(ATTINY_MODE)
+		while (!Serial) {
+			delay(1);
+		}
 
-	Serial.begin(230400);
-	Serial.println("BOOT");
+		Serial.begin(230400);
+		Serial.println("BOOT");
+	#endif
 }
 
 
@@ -95,7 +98,7 @@ void Pixie_Chroma_Lite::show(){
 	delayMicroseconds( 250 );
 }
 
-
+#if !defined(ATTINY_MODE)
 void Pixie_Chroma_Lite::print_mask(){
 	Serial.println();
 	for (uint8_t y = 0; y < 7; y++) {
@@ -118,6 +121,7 @@ void Pixie_Chroma_Lite::print_mask(){
 	}
 	Serial.println();
 }
+#endif
 
 
 void Pixie_Chroma_Lite::send_byte( uint8_t byte ) {

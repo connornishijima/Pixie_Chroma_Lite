@@ -26,12 +26,14 @@ class Pixie_Chroma_Lite{
 		/*+-- Functions - Setup ------------------------------------------------------------*/ 
 		/*|*/ void begin( const uint8_t data_pin, uint8_t num_pixies );
 		/*+-- Functions - print(  ) --------------------------------------------------------*/ 
-		/*|*/ void add_char( char chr, uint16_t x_pos );		
+		/*|*/ void add_char( char chr, uint16_t x_pos );
 		/*+-- Functions - Updating the mask/LEDs -------------------------------------------*/
 		/*|*/ void clear();
 		/*|*/ void show();
 		/*+-- Functions - Debug ------------------------------------------------------------*/
+		#if !defined(ATTINY_MODE)
 		/*|*/ void print_mask();
+		#endif
 		/*+---------------------------------------------------------------------------------*/
 		void set_color( uint8_t r, uint8_t g, uint8_t b );
 		void set_color( uint8_t r, uint8_t g, uint8_t b, uint16_t display );

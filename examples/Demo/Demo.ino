@@ -3,33 +3,37 @@ Pixie_Chroma_Lite pix;
 
 // WARNING!
 //
-// Only ATMega series is tested thus far!
+// Only ATMega and ATTiny*5 series is tested thus far!
 //
 // You must hard-code your DATA PIN and PORT
-// in "platforms/pixie_atmega.h" under
+// in "platforms/pixie_avr.h" under
 // "TEMPORARY PIN SETTINGS". This will be
 // simplified in the future.
 //
 // Default pin is PB4 for now. That's:
 //
-// Pin 12 on Uno      (ATMEGA328P)
-// Pin 10 on Mega     (ATMEGA2560)
-// Pin 8  on Leonardo (ATMEGA32u4)
+// Pin 12 on Uno         (ATMEGA328P)
+// Pin 10 on Mega        (ATMEGA2560)
+// Pin 8  on Leonardo    (ATMEGA32u4)
+// Pin 4  on Trinket     (ATTINY45/85)
+
+#define NUM_PIXIES 12 // Number of Pixie Chroma PCBs
+#define DATA_PIN 0    // NOT YET USED. SEE COMMENT UP TOP
 
 uint8_t color_index = 2;
 uint8_t colors[3][3] = {
-  {255,0,0},
-  {0,255,0},
-  {0,0,255}
+  {255,255,0},
+  {0,255,255},
+  {255,0,255}
 };
 
 void setup() {
-  pix.begin(4, 12);
+  pix.begin(DATA_PIN, NUM_PIXIES);
 }
 
 void loop() {
   static int16_t lev = 0;
-  static int16_t dir = -1;
+  static int16_t dir = -2;
   
   pix.set_color(
     (colors[color_index][0] * lev) >> 8,
@@ -39,13 +43,13 @@ void loop() {
   pix.show();
 
   lev += dir;
-  if(dir == 1 && lev >= 25){
+  if(dir == 2 && lev >= 25){
     lev = 25;
-    dir = -1;
+    dir = -2;
   }
-  else if(dir == -1 && lev <= 0){
+  else if(dir == -2 && lev <= 0){
     lev = 0;
-    dir = 1;
+    dir = 2;
 
     color_index++;
     if(color_index >= 3){
@@ -54,7 +58,7 @@ void loop() {
     
     pix.clear();
     if(color_index == 0){
-      print_string("Hello, from ATmega328P!");
+      print_string("Hello, from an ATtiny85!");
     }
     else if(color_index == 1){
       print_string("Rendered directly to the");
