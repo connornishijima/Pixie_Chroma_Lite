@@ -1,5 +1,5 @@
-#include "Pixie_Chroma_Lite.h"
-Pixie_Chroma_Lite pix;
+#include "PixieChromaLite.h"
+PixieChromaLite pix;
 
 // WARNING!
 //
