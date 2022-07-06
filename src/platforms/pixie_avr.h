@@ -12,7 +12,7 @@
 
 #define PIXEL_PORT  PORTB  // Port of the pin the pixels are connected to
 #define PIXEL_DDR   DDRB   // Port of the pin the pixels are connected to
-#define PIXEL_BIT   4      // Bit of the pin the pixels are connected to (default PB2)
+#define PIXEL_BIT   4      // Bit of the pin the pixels are connected to (default PB4)
 
 // TEMPORARY PIN SETTINGS ###############################################################
 
@@ -20,11 +20,11 @@
 // These are the timing constraints taken mostly from the WS2812 datasheets 
 // These are chosen to be conservative and avoid problems rather than for maximum throughput 
 
-#define T1H  900    // Width of a 1 bit in ns
-#define T1L  600    // Width of a 1 bit in ns
+#define T1H  900    // Width of a 1 bit high in ns
+#define T1L  600    // Width of a 1 bit low in ns
 
-#define T0H  400    // Width of a 0 bit in ns
-#define T0L  900    // Width of a 0 bit in ns
+#define T0H  400    // Width of a 0 bit high in ns
+#define T0L  900    // Width of a 0 bit low in ns
 
 #define NS_PER_SEC (1000000000L)          // Note that this has to be SIGNED since we want to be able to check for negative values of derivatives
 
@@ -38,7 +38,7 @@ void init_pin(uint8_t data_pin){ // Parameter not used yet
 }
 
 void send_bit( bool bit_val ) {
-  if ( bit_val ) { // 0 bit
+  if ( bit_val ) { // 1 bit
     asm volatile (
       "sbi %[port], %[bit] \n\t"        // Set the output bit
       ".rept %[on_cycles] \n\t"                                // Execute NOPs to delay exactly the specified number of cycles
@@ -56,12 +56,7 @@ void send_bit( bool bit_val ) {
 
     );
   }
-  else{ // 1 bit
-
-    // **************************************************************************
-    // This line is really the only tight goldilocks timing in the whole program!
-    // **************************************************************************
-
+  else{ // 0 bit
     asm volatile (
       "sbi %[port], %[bit] \n\t"      // Set the output bit
       ".rept %[on_cycles] \n\t"        // Now timing actually matters. The 0-bit must be long enough to be detected but not too long or it will be a 1-bit

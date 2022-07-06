@@ -10,6 +10,12 @@
 #include "PixieChromaLite.h" 
 #include "utility/pixie_utility.h"
 #include "platforms/pixie_avr.h"
+#include "platforms/pixie_esp8266.h"
+#include "platforms/pixie_rp2040.h"
+
+#if defined(ARDUINO_ARCH_RP2040)
+	#include <hardware/sync.h>
+#endif
 
 // ---------------------------------------------------------------------------------------------------------|
 // -- PUBLIC CLASS FUNCTIONS -------------------------------------------------------------------------------|
@@ -71,7 +77,12 @@ void PixieChromaLite::add_char( char chr, uint16_t x_pos ){
 // %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 void PixieChromaLite::show(){
-	cli();
+	#if defined(ARDUINO_ARCH_RP2040)
+		uint32_t ints = save_and_disable_interrupts();
+	#else
+		cli();
+	#endif
+	
 	for(uint8_t disp = 0; disp < num_displays; disp++){
 		for(uint8_t y = 0; y < 7; y++){
 			for(uint8_t x = 0; x < 5; x++){
@@ -93,9 +104,14 @@ void PixieChromaLite::show(){
 			}
 		}
 	}
-	sei();
 	
-	delayMicroseconds( 250 );
+	#if defined(ARDUINO_ARCH_RP2040)
+		restore_interrupts( ints );
+	#else
+		sei();
+	#endif
+	
+	delayMicroseconds( 50 );
 }
 
 #if !defined(ATTINY_MODE)
