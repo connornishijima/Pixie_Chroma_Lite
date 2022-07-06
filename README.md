@@ -23,12 +23,14 @@ Tested / working so far:
 - ATMEGA1280
 - ATMEGA2560
 - ATTINY45
-- ATTINY85 // ATTINY\*4 and 0-series not yet tested
+- ATTINY85 *(ATTINY\*4 and 0-series not yet tested)*
+- RP2040 (133MHz only for now)
+- ESP8266
 
 Not working yet / planned:
 
 - ~ATTINY series~
 - SAMD21
-- ESP8266
+- ~ESP8266~
 - ESP32
 - Teensy series
